@@ -25,6 +25,12 @@ class CreateWorkspacesTable extends Migration
                 $table->foreign('creator_id')->references('id')->on('users');
             }
         );
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->unsignedBigInteger('current_workspace_id')->after('password')->nullable();
+
+            $table->foreign('current_workspace_id')->references('id')->on('workspaces');
+        });
     }
 
     /**

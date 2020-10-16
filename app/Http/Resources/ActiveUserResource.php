@@ -36,6 +36,7 @@ class ActiveUserResource extends JsonResource
         $data = parent::toArray($request);
 
         $data['authorization_token'] = $this->token;
+        $data['current_workspace'] = WorkspaceResource::make($this->whenLoaded('current_workspace'));
 
         return $data;
     }

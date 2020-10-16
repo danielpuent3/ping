@@ -33,6 +33,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('workspaces')->group(function () {
         Route::post('/', [ApiWorkspacesController::class, 'store'])->name('api.workspaces.store');
         Route::get('/', [ApiWorkspacesController::class, 'index'])->name('api.workspaces.index');
+        Route::post('/{id}/current', [ApiWorkspacesController::class, 'setCurrentWorkspace'])->name('api.workspaces.set_current');
     });
 });
 

@@ -20,7 +20,8 @@
 ```json
 {
   "email" : "required, Valid Email",
-  "password" : "required"
+  "password" : "required",
+  "workspace_name" : "optional | string | Will attempt to set the current workspace to a workspace the user belongs to"
 }
 ```
 

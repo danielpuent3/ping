@@ -3,6 +3,7 @@
 ---
 - [Create Workspace](#create)
 - [List Workspaces](#list)
+- [Set Current Workspace](#current)
 
 
 <a name="create"></a>
@@ -44,6 +45,31 @@
 ```json
 {
   "Authorization": "Bearer {token}"
+}
+```
+
+<a name="current"></a>
+## Set Current Workspace
+
+### Endpoint
+
+| Method | URL   | Action | Route Name |
+| : |   :-   |  :  | : |
+| POST | **{{route('api.workspaces.set_current', [':id'])}}** | ApiWorkspacesController@setCurrentWorkspace | api.workspaces.set_current |
+
+### Headers
+
+```json
+{
+  "Authorization": "Bearer {token}"
+}
+```
+
+### URL Params
+
+```json
+{
+  "id": "Workspace ID"
 }
 ```
 

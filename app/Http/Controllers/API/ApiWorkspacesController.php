@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreWorkspaceRequest;
+use App\Http\Requests\WorkspaceRequest;
 use App\Http\Resources\WorkspaceResource;
 use Illuminate\Http\Request;
 
@@ -31,6 +32,19 @@ class ApiWorkspacesController extends Controller
 
         $workspace->users()->syncWithoutDetaching($request->user());
 
-        return WorkspaceResource::make($workspace->fresh('creator'));
+        $request->user()->setWorkspace($workspace);
+
+        return WorkspaceResource::make($workspace->fresh(['creator']));
+    }
+
+    /**
+     * @param WorkspaceRequest $request
+     * @return WorkspaceResource
+     */
+    public function setCurrentWorkspace(WorkspaceRequest $request)
+    {
+        $request->user()->setWorkspace($request->workspace());
+
+        return WorkspaceResource::make($request->workspace());
     }
 }

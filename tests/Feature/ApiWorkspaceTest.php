@@ -115,6 +115,28 @@ class ApiWorkspaceTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function a_user_should_be_able_to_set_their_current_workspace()
+    {
+        $user = User::factory()->create();
+        $token = $user->createToken('authorization')->plainTextToken;
+
+        $this->assertNull($user->current_workspace);
+
+        $workspace = Workspace::factory()->create();
+        $workspace->users()->syncWithoutDetaching($user);
+
+        $headers = [
+            'Authorization' => "Bearer {$token}",
+        ];
+
+        $this->postJson(route('api.workspaces.set_current', ['id' => $workspace->id]), [], $headers)->assertOk();
+
+        $this->assertEquals($user->fresh()->current_workspace->id, $workspace->id);
+    }
+
+    /**
      * @param null $user
      * @return \Illuminate\Testing\TestResponse
      */

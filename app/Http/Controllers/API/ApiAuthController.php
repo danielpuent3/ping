@@ -7,13 +7,12 @@ use App\Http\Requests\AuthenticationRequest;
 use App\Http\Requests\AuthRegisterRequest;
 use App\Http\Resources\ActiveUserResource;
 use App\Models\User;
+use App\Traits\ResolvesCurrentWorkspace;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\ViewErrorBag;
-use Illuminate\Validation\UnauthorizedException;
 
 class ApiAuthController extends Controller
 {
+    use ResolvesCurrentWorkspace;
 
     /**
      * @param AuthenticationRequest $request
@@ -25,11 +24,15 @@ class ApiAuthController extends Controller
 
         $token = $user->createToken('authorization');
 
-        return ActiveUserResource::make($user, $token->plainTextToken);
+        //TODO throw error if user tries to "authenticate" into workspace that doesn't exist or they don't own
+        $this->resolveCurrentWorkspace($request->user(), $request->input('workspace_name'));
+
+        return ActiveUserResource::make($user->fresh('current_workspace'), $token->plainTextToken);
     }
 
     /**
      * @param AuthRegisterRequest $request
+     * @return ActiveUserResource
      */
     public function register(AuthRegisterRequest $request)
     {
