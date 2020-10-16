@@ -24,6 +24,7 @@ Route::middleware('auth:sanctum')->get(
 
 Route::prefix('auth')->group(
     function () {
-        Route::post('/register', [\App\Http\Controllers\API\ApiAuthController::class, 'register'])->name('api.auth.register');
+        Route::post('/', [ApiAuthController::class, 'authenticate'])->name('api.auth.login');
+        Route::post('/register', [ApiAuthController::class, 'register'])->name('api.auth.register');
     }
 );

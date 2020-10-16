@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Actions\Fortify\PasswordValidationRules;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
 class AuthRegisterRequest extends FormRequest
@@ -37,5 +38,15 @@ class AuthRegisterRequest extends FormRequest
             ],
             'password' => $this->passwordRules(),
         ];
+    }
+
+    /**
+     * @return array
+     */
+    public function validated(): array
+    {
+        return array_merge(parent::validated(), [
+            'password' => Hash::make($this->input('password')),
+        ]);
     }
 }

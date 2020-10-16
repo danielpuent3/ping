@@ -9,6 +9,23 @@ class ActiveUserResource extends JsonResource
 {
 
     /**
+     * @var null|string
+     */
+    protected $token;
+
+    /**
+     * ActiveUserResource constructor.
+     *
+     * @param $resource
+     * @param null $token
+     */
+    public function __construct($resource, $token = null)
+    {
+        $this->token = $token;
+        parent::__construct($resource);
+    }
+
+    /**
      * Transform the resource into an array.
      *
      * @param Request $request
@@ -16,6 +33,10 @@ class ActiveUserResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        $data = parent::toArray($request);
+
+        $data['authorization_token'] = $this->token;
+
+        return $data;
     }
 }
