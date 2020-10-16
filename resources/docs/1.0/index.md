@@ -1,2 +1,2 @@
 - ## Get Started
-    - [Overview](/{{route}}/{{version}}/overview)
+    - [Auth](/{{route}}/{{version}}/auth)
