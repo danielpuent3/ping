@@ -14,4 +14,11 @@ abstract class TestCase extends BaseTestCase
     use CreatesApplication;
     use RefreshDatabase;
     use WithFaker;
+
+    protected function headers($token)
+    {
+        return [
+            'Authorization' => "Bearer {$token}",
+        ];
+    }
 }

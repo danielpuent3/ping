@@ -15,15 +15,13 @@ class ApiWorkspaceTest extends TestCase
     public function a_user_should_be_authenticated_to_create_a_workspace()
     {
         $user = User::factory()->create();
-        $token = $user->createToken('authorization')->plainTextToken;
+        $token = $user->new_authorization_token;
 
         $data = [
             'name' => 'Soapbox',
         ];
 
-        $headers = [];
-
-        $this->postJson(route('api.workspaces.store'), $data, $headers)->assertUnauthorized();
+        $this->postJson(route('api.workspaces.store'), $data, [])->assertUnauthorized();
     }
 
     /**
@@ -32,15 +30,12 @@ class ApiWorkspaceTest extends TestCase
     public function a_user_should_be_able_to_create_a_workspace()
     {
         $user = User::factory()->create();
-        $token = $user->createToken('authorization')->plainTextToken;
+        $token = $user->new_authorization_token;
 
         $data = [
             'name' => 'Soapbox',
         ];
 
-        $headers = [
-            'Authorization' => "Bearer {$token}",
-        ];
 
         $this->successfulResponse()->assertJsonFragment(
             [
@@ -61,17 +56,13 @@ class ApiWorkspaceTest extends TestCase
         );
 
         $user = User::factory()->create();
-        $token = $user->createToken('authorization')->plainTextToken;
+        $token = $user->new_authorization_token;
 
         $data = [
             'name' => 'Fish Box',
         ];
 
-        $headers = [
-            'Authorization' => "Bearer {$token}",
-        ];
-
-        $this->postJson(route('api.workspaces.store'), $data, $headers)->assertJsonValidationErrors(
+        $this->postJson(route('api.workspaces.store'), $data, $this->headers($token))->assertJsonValidationErrors(
             [
                 'name' => 'This workspace name has already been taken.',
             ]
@@ -101,17 +92,16 @@ class ApiWorkspaceTest extends TestCase
     public function a_user_should_be_able_to_see_all_workspaces_they_belong_to()
     {
         $user = User::factory()->create();
-        $token = $user->createToken('authorization')->plainTextToken;
+        $token = $user->new_authorization_token;
 
-        $headers = [
-            'Authorization' => "Bearer {$token}",
-        ];
 
-        Workspace::factory()->times(5)->create()->each(function ($workspace) use ($user) {
-            $workspace->users()->syncWithoutDetaching($user);
-        });
+        Workspace::factory()->times(5)->create()->each(
+            function ($workspace) use ($user) {
+                $workspace->users()->syncWithoutDetaching($user);
+            }
+        );
 
-        $this->getJson(route('api.workspaces.index'), $headers)->assertJsonCount(5, 'data');
+        $this->getJson(route('api.workspaces.index'), $this->headers($token))->assertJsonCount(5, 'data');
     }
 
     /**
@@ -120,18 +110,19 @@ class ApiWorkspaceTest extends TestCase
     public function a_user_should_be_able_to_set_their_current_workspace()
     {
         $user = User::factory()->create();
-        $token = $user->createToken('authorization')->plainTextToken;
+        $token = $user->new_authorization_token;
 
         $this->assertNull($user->current_workspace);
 
         $workspace = Workspace::factory()->create();
         $workspace->users()->syncWithoutDetaching($user);
 
-        $headers = [
-            'Authorization' => "Bearer {$token}",
-        ];
 
-        $this->postJson(route('api.workspaces.set_current', ['id' => $workspace->id]), [], $headers)->assertOk();
+        $this->postJson(
+            route('api.workspaces.set_current', ['id' => $workspace->id]),
+            [],
+            $this->headers($token)
+        )->assertOk();
 
         $this->assertEquals($user->fresh()->current_workspace->id, $workspace->id);
     }
@@ -143,16 +134,13 @@ class ApiWorkspaceTest extends TestCase
     protected function successfulResponse($user = null)
     {
         $user = $user ?? User::factory()->create();
-        $token = $user->createToken('authorization')->plainTextToken;
+        $token = $user->new_authorization_token;
 
         $data = [
             'name' => 'Soapbox',
         ];
 
-        $headers = [
-            'Authorization' => "Bearer {$token}",
-        ];
 
-        return $this->postJson(route('api.workspaces.store'), $data, $headers);
+        return $this->postJson(route('api.workspaces.store'), $data, $this->headers($token));
     }
 }

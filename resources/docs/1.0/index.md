@@ -1,3 +1,4 @@
 - ## Get Started
     - [Auth](/{{route}}/{{version}}/auth)
     - [Workspaces](/{{route}}/{{version}}/workspaces)
+    - [Channels](/{{route}}/{{version}}/channels)

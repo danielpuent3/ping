@@ -6,25 +6,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Workspace extends Model
+class Channel extends Model
 {
-
     use HasFactory;
 
     /**
      * @var array
      */
     protected $fillable = [
-        'name'
-    ];
-
-    /**
-     * @var array
-     */
-    protected $hidden = [
-        'creator_id',
+        'name',
+        'description',
+        'creator_id'
     ];
 
     /**
@@ -40,15 +33,7 @@ class Workspace extends Model
      */
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class)->withTimestamps();
-    }
-
-    /**
-     * @return HasMany
-     */
-    public function channels(): HasMany
-    {
-        return $this->hasMany(Channel::class);
+        return $this->belongsToMany(User::class);
     }
 
 }

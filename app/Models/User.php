@@ -61,6 +61,14 @@ class User extends Authenticatable
     }
 
     /**
+     * @return BelongsToMany
+     */
+    public function channels(): BelongsToMany
+    {
+        return $this->belongsToMany(Channel::class)->withTimestamps();
+    }
+
+    /**
      * @return BelongsTo
      */
     public function current_workspace(): BelongsTo
@@ -81,6 +89,16 @@ class User extends Authenticatable
         $this->current_workspace()->associate($workspace);
 
         return $this->save();
+    }
+
+    /**
+     * @return string
+     */
+    public function getNewAuthorizationTokenAttribute(): string
+    {
+        $token = $this->createToken('authorization');
+
+        return $token->plainTextToken;
     }
 
 }
