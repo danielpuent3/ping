@@ -12,6 +12,8 @@
 
 ### php artisan key:generate
 ### composer install
+### npm install && npm run dev
+- I don't believe I ended up doing anything that would break if this isn't run but it shouldn't hurt  
 ### php artisan migrate
 ### Valet/php artisan serve/homestead
 - any of these should work fine. just make sure you update APP_URL in .env accordingly
