@@ -2,6 +2,7 @@
 
 ---
 - [Authenticate](#authenticate)
+- [Current User](#current)
 - [Register](#register)
 
 
@@ -14,12 +15,6 @@
 | : |   :-   |  :  | : |
 | POST | **{{route('api.auth.login')}}** | ApiAuthController@authenticate | api.auth.login |
 
-### URL Params
-
-```json
-none
-```
-
 ### Data Params
 
 ```json
@@ -29,7 +24,25 @@ none
 }
 ```
 
-> {info} Response will return an `authorization_token`. Authenticated requests will need to pass this token via the Authorization header.
+> {info} Response will return an `authorization_token`. Authenticated requests will need to pass this bearer token via the Authorization header. ex. Authorization: Bearer {token}
+
+
+<a name="current"></a>
+## Get Current User
+
+### Endpoint
+
+| Method | URL   | Action | Route Name |
+| : |   :-   |  :  | : |
+| GET | **{{route('api.auth.current')}}** | api.php | api.auth.login |
+
+### Headers
+
+```json
+{
+  "Authorization": "Bearer {token}"
+}
+```
 
 <a name="register"></a>
 ## Register
@@ -39,12 +52,6 @@ none
 | Method | URL   | Action | Route Name |
 | : |   :-   |  :  | : |
 | POST | **{{route('api.auth.register')}}** | ApiAuthController@register | api.auth.register |
-
-### URL Params
-
-```json
-none
-```
 
 ### Data Params
 

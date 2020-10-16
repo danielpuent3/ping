@@ -15,15 +15,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get(
-    '/user',
-    function (Request $request) {
-        return $request->user();
-    }
-);
+
 
 Route::prefix('auth')->group(
     function () {
+        Route::middleware('auth:sanctum')->get(
+            '/',
+            function (Request $request) {
+                return $request->user();
+            }
+        )->name('api.auth.current');
         Route::post('/', [ApiAuthController::class, 'authenticate'])->name('api.auth.login');
         Route::post('/register', [ApiAuthController::class, 'register'])->name('api.auth.register');
     }
