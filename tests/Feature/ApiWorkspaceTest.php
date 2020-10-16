@@ -111,7 +111,7 @@ class ApiWorkspaceTest extends TestCase
             $workspace->users()->syncWithoutDetaching($user);
         });
 
-        $this->getJson(route('api.workspaces.index'), $headers)->assertJsonCount(5);
+        $this->getJson(route('api.workspaces.index'), $headers)->assertJsonCount(5, 'data');
     }
 
     /**

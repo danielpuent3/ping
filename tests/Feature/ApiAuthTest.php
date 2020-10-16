@@ -145,7 +145,6 @@ class ApiAuthTest extends TestCase
     protected function registerParams(): array
     {
         $password = $this->faker->password(8) . 'A' . '1';
-        $password = 'appled' . 'A' . '1';
         return [
             'name' => $this->faker->name,
             'email' => $this->faker->email,
