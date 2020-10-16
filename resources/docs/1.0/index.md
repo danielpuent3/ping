@@ -1,2 +1,3 @@
 - ## Get Started
     - [Auth](/{{route}}/{{version}}/auth)
+    - [Workspaces](/{{route}}/{{version}}/workspaces)

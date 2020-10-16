@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\ApiWorkspacesController;
 use App\Http\Controllers\API\ApiAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -15,8 +16,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-
 Route::prefix('auth')->group(
     function () {
         Route::middleware('auth:sanctum')->get(
@@ -29,3 +28,11 @@ Route::prefix('auth')->group(
         Route::post('/register', [ApiAuthController::class, 'register'])->name('api.auth.register');
     }
 );
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::prefix('workspaces')->group(function () {
+        Route::post('/', [ApiWorkspacesController::class, 'store'])->name('api.workspaces.store');
+        Route::get('/', [ApiWorkspacesController::class, 'index'])->name('api.workspaces.index');
+    });
+});
+
